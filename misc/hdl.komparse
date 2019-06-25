@@ -1,0 +1,17 @@
+-- Grammar for Hardware Description Language (HDL)
+-- Author: Thomas Bollmeier <developer@thomas-bollmeier.de>
+-- Version: 0.1.0
+
+comment '//' '\n';
+comment '/*' '*/';
+
+whitespace ' ', '\t', '\r', '\n';
+
+token LBRACE '{';
+token RBRACE '}';
+token ID '[a-zA-Z][a-zA-Z0-9]*';
+
+@start
+chip -> 'CHIP' name#ID LBRACE
+
+RBRACE;
