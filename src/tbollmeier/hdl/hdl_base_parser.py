@@ -32,5 +32,4 @@ class HDLBaseParser(Parser):
     
     def __init__(self):
         Parser.__init__(self, _Grammar())
-        
-    
+
