@@ -1,28 +1,36 @@
 import sys
 import os.path
+import unittest
 source_dir = os.path.dirname(__file__) + os.path.sep + ".." + os.path.sep + "src"
 sys.path.insert(0, source_dir)
 from tbollmeier.hdl.hdl_parser import HDLParser
 
 
-def test_parse():
+class HDLParserTest(unittest.TestCase):
 
-    parser = HDLParser()
+    def setUp(self):
 
-    hdl_code = """
-    /** My first chip */
-    CHIP MyChip {
-    
-    }
-    """
+        self._parser = HDLParser()
 
-    ast = parser.parse(hdl_code)
-    print(ast.to_xml())
+    def test_parse(self):
+
+        hdl_code = """
+        /** My first chip */
+        CHIP Or {
+            IN a, b;
+            OUT out;
+        }
+        """
+
+        ast = self._parser.parse(hdl_code)
+        self.assertIsNotNone(ast, self._parser.error())
+
+        print(ast.to_xml())
 
 
 if __name__ == "__main__":
 
-    test_parse()
+    unittest.main()
 
 
 

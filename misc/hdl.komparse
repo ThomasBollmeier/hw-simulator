@@ -7,9 +7,20 @@ comment '/*' '*/';
 
 token LBRACE '{';
 token RBRACE '}';
+token COMMA ',';
+token SEMICOLON ';';
 token ID '[a-zA-Z][a-zA-Z0-9]*';
 
 @start
 chip -> 'CHIP' name#ID LBRACE
-
+    inputs
+    outputs
 RBRACE;
+
+inputs -> 'IN' in#input (COMMA in#input)* SEMICOLON;
+
+input -> ID;
+
+outputs -> 'OUT' out#output (COMMA out#output)* SEMICOLON;
+
+output -> ID;
