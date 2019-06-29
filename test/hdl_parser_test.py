@@ -17,8 +17,9 @@ class HDLParserTest(unittest.TestCase):
         hdl_code = """
         /** My first chip */
         CHIP Or {
-            IN a, b;
-            OUT out;
+            IN a[8], b[8];
+            OUT out[8];
+            PARTS:
         }
         """
 

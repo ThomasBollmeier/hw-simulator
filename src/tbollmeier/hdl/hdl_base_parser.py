@@ -14,9 +14,14 @@ class _Grammar(Grammar):
         self.add_comment('/*', '*/')
         self.add_token('LBRACE', '{')
         self.add_token('RBRACE', '}')
+        self.add_token('LBRACKET', '\[')
+        self.add_token('RBRACKET', '\]')
         self.add_token('COMMA', ',')
         self.add_token('SEMICOLON', ';')
+        self.add_token('COLON', ':')
         self.add_token('ID', '[a-zA-Z][a-zA-Z0-9]*')
+        self.add_token('POS_INT', '[1-9][0-9]*')
+        self.add_token('PARTS', 'PARTS')
         self.add_keyword('CHIP')
         self.add_keyword('IN')
         self.add_keyword('OUT')
@@ -24,9 +29,9 @@ class _Grammar(Grammar):
     def _init_rules(self):
         self.rule('chip', self._seq_1(), is_root=True)
         self.rule('inputs', self._seq_2())
-        self.rule('input', self.ID())
-        self.rule('outputs', self._seq_4())
-        self.rule('output', self.ID())
+        self.rule('inout', self._seq_4())
+        self.rule('outputs', self._seq_6())
+        self.rule('parts', self._seq_8())
     
     def _seq_1(self):
         return Sequence(
@@ -35,31 +40,48 @@ class _Grammar(Grammar):
             self.LBRACE(),
             self.inputs(),
             self.outputs(),
+            self.parts(),
             self.RBRACE())
     
     def _seq_2(self):
         return Sequence(
             self.IN(),
-            self.input('in'),
+            self.inout('in'),
             Many(self._seq_3()),
             self.SEMICOLON())
     
     def _seq_3(self):
         return Sequence(
             self.COMMA(),
-            self.input('in'))
+            self.inout('in'))
     
     def _seq_4(self):
         return Sequence(
-            self.OUT(),
-            self.output('out'),
-            Many(self._seq_5()),
-            self.SEMICOLON())
+            self.ID(),
+            Optional(self._seq_5()))
     
     def _seq_5(self):
         return Sequence(
+            self.LBRACKET(),
+            self.POS_INT('size'),
+            self.RBRACKET())
+    
+    def _seq_6(self):
+        return Sequence(
+            self.OUT(),
+            self.inout('out'),
+            Many(self._seq_7()),
+            self.SEMICOLON())
+    
+    def _seq_7(self):
+        return Sequence(
             self.COMMA(),
-            self.output('out'))
+            self.inout('out'))
+    
+    def _seq_8(self):
+        return Sequence(
+            self.PARTS(),
+            self.COLON())
     
     
 class HDLBaseParser(Parser):

@@ -15,8 +15,7 @@ class HDLParser(HDLBaseParser):
         g.set_ast_transform("chip", self._trans_chip)
         g.set_ast_transform("inputs", self._trans_inputs)
         g.set_ast_transform("outputs", self._trans_outputs)
-        g.set_ast_transform("input", self._trans_inout)
-        g.set_ast_transform("output", self._trans_inout)
+        g.set_ast_transform("inout", self._trans_inout)
 
     def _trans_chip(self, ast):
 
@@ -43,4 +42,11 @@ class HDLParser(HDLBaseParser):
         return ret
 
     def _trans_inout(self, ast):
-        return ast.get_children()[0]
+        ret = Ast("pin")
+        name = ast.get_children()[0]
+        ret.set_attr("name", name.value)
+        size = ast.find_children_by_id('size')
+        if size:
+            size = size[0]
+            ret.set_attr("bus-size", size.value)
+        return ret

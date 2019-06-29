@@ -7,20 +7,26 @@ comment '/*' '*/';
 
 token LBRACE '{';
 token RBRACE '}';
+token LBRACKET '\[';
+token RBRACKET '\]';
 token COMMA ',';
 token SEMICOLON ';';
+token COLON ':';
 token ID '[a-zA-Z][a-zA-Z0-9]*';
+token POS_INT '[1-9][0-9]*';
+token PARTS 'PARTS';
 
 @start
 chip -> 'CHIP' name#ID LBRACE
     inputs
     outputs
+    parts
 RBRACE;
 
-inputs -> 'IN' in#input (COMMA in#input)* SEMICOLON;
+inputs -> 'IN' in#inout (COMMA in#inout)* SEMICOLON;
 
-input -> ID;
+inout -> ID (LBRACKET size#POS_INT RBRACKET)?;
 
-outputs -> 'OUT' out#output (COMMA out#output)* SEMICOLON;
+outputs -> 'OUT' out#inout (COMMA out#inout)* SEMICOLON;
 
-output -> ID;
+parts -> PARTS COLON;
