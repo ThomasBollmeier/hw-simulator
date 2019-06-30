@@ -9,17 +9,23 @@ token LBRACE '{';
 token RBRACE '}';
 token LBRACKET '\[';
 token RBRACKET '\]';
+token LPAR '\(';
+token RPAR '\)';
+token DOT2 '\.\.';
 token COMMA ',';
 token SEMICOLON ';';
 token COLON ':';
+token EQ '=';
+token TRUE 'true';
+token FALSE 'false';
 token ID '[a-zA-Z][a-zA-Z0-9]*';
 token POS_INT '[1-9][0-9]*';
+token INT '0|[1-9][0-9]*';
 token PARTS 'PARTS';
 
 @start
 chip -> 'CHIP' name#ID LBRACE
-    inputs
-    outputs
+    (inputs | outputs)+
     parts
 RBRACE;
 
@@ -29,4 +35,10 @@ inout -> ID (LBRACKET size#POS_INT RBRACKET)?;
 
 outputs -> 'OUT' out#inout (COMMA out#inout)* SEMICOLON;
 
-parts -> PARTS COLON;
+parts -> PARTS COLON part#part+;
+
+part -> chip#ID LPAR conn#connection (COMMA conn#connection)* RPAR SEMICOLON;
+
+connection -> param#ID (LBRACKET from#INT DOT2 to#INT RBRACKET)? EQ value;
+
+value -> TRUE | FALSE | pin#ID (LBRACKET from#INT DOT2 to#INT RBRACKET)?;
