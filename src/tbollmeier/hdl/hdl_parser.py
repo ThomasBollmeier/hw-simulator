@@ -20,6 +20,7 @@ class HDLParser(HDLBaseParser):
         g.set_ast_transform("part", self._trans_part)
         g.set_ast_transform("connection", self._trans_connection)
         g.set_ast_transform("value", self._trans_value)
+        g.set_ast_transform("builtin", self._trans_builtin)
 
     def _trans_chip(self, ast):
 
@@ -29,6 +30,7 @@ class HDLParser(HDLBaseParser):
         ret.add_children_by_name(ast, "inputs")
         ret.add_children_by_name(ast, "outputs")
         ret.add_children_by_name(ast, "parts")
+        ret.add_children_by_name(ast, "builtin")
 
         return ret
 
@@ -97,4 +99,9 @@ class HDLParser(HDLBaseParser):
             to = ast.find_children_by_id('to')[0].value
             ret.set_attr("from", from_)
             ret.set_attr("to", to)
+        return ret
+
+    def _trans_builtin(self, ast):
+        ret = Ast("builtin")
+        ret.set_attr("chip-name", ast.find_children_by_id("chip")[0].value)
         return ret

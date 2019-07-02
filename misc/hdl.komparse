@@ -24,9 +24,11 @@ token INT '0|[1-9][0-9]*';
 token PARTS 'PARTS';
 
 @start
+chips -> chip+;
+
 chip -> 'CHIP' name#ID LBRACE
     (inputs | outputs)+
-    parts
+    (parts | builtin)
 RBRACE;
 
 inputs -> 'IN' in#inout (COMMA in#inout)* SEMICOLON;
@@ -42,3 +44,5 @@ part -> chip#ID LPAR conn#connection (COMMA conn#connection)* RPAR SEMICOLON;
 connection -> param#ID (LBRACKET from#INT DOT2 to#INT RBRACKET)? EQ value;
 
 value -> TRUE | FALSE | pin#ID (LBRACKET from#INT DOT2 to#INT RBRACKET)?;
+
+builtin -> 'BUILTIN' chip#ID SEMICOLON;

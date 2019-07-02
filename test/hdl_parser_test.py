@@ -15,6 +15,12 @@ class HDLParserTest(unittest.TestCase):
     def test_parse(self):
 
         hdl_code = """
+        CHIP Nand {
+            IN a, b;
+            OUT out;
+            BUILTIN Nand;
+        }
+        
         /** My first chip */
         CHIP Or8 {
             IN a[8], b[8];

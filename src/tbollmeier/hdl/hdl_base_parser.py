@@ -32,16 +32,19 @@ class _Grammar(Grammar):
         self.add_keyword('CHIP')
         self.add_keyword('IN')
         self.add_keyword('OUT')
+        self.add_keyword('BUILTIN')
     
     def _init_rules(self):
-        self.rule('chip', self._seq_1(), is_root=True)
+        self.rule('chips', OneOrMore(self.chip()), is_root=True)
+        self.rule('chip', self._seq_1())
         self.rule('inputs', self._seq_2())
         self.rule('inout', self._seq_4())
         self.rule('outputs', self._seq_6())
         self.rule('parts', self._seq_8())
         self.rule('part', self._seq_9())
         self.rule('connection', self._seq_11())
-        self.rule('value', self._oneof_2())
+        self.rule('value', self._oneof_3())
+        self.rule('builtin', self._seq_15())
     
     def _seq_1(self):
         return Sequence(
@@ -49,7 +52,7 @@ class _Grammar(Grammar):
             self.ID('name'),
             self.LBRACE(),
             OneOrMore(self._oneof_1()),
-            self.parts(),
+            self._oneof_2(),
             self.RBRACE())
     
     def _seq_10(self):
@@ -84,6 +87,12 @@ class _Grammar(Grammar):
             self.DOT2(),
             self.INT('to'),
             self.RBRACKET())
+    
+    def _seq_15(self):
+        return Sequence(
+            self.BUILTIN(),
+            self.ID('chip'),
+            self.SEMICOLON())
     
     def _seq_2(self):
         return Sequence(
@@ -141,6 +150,11 @@ class _Grammar(Grammar):
             self.outputs())
     
     def _oneof_2(self):
+        return OneOf(
+            self.parts(),
+            self.builtin())
+    
+    def _oneof_3(self):
         return OneOf(
             self.TRUE(),
             self.FALSE(),
