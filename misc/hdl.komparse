@@ -24,8 +24,6 @@ token INT '0|[1-9][0-9]*';
 token PARTS 'PARTS';
 
 @start
-chips -> chip+;
-
 chip -> 'CHIP' name#ID LBRACE
     (inputs | outputs)+
     (parts | builtin)

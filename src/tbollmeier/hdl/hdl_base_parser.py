@@ -35,8 +35,7 @@ class _Grammar(Grammar):
         self.add_keyword('BUILTIN')
     
     def _init_rules(self):
-        self.rule('chips', OneOrMore(self.chip()), is_root=True)
-        self.rule('chip', self._seq_1())
+        self.rule('chip', self._seq_1(), is_root=True)
         self.rule('inputs', self._seq_2())
         self.rule('inout', self._seq_4())
         self.rule('outputs', self._seq_6())
