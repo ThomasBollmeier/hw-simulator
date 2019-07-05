@@ -3,25 +3,27 @@ import os.path
 import unittest
 source_dir = os.path.dirname(__file__) + os.path.sep + ".." + os.path.sep + "src"
 sys.path.insert(0, source_dir)
-from tbollmeier.hdl.hdl_chip_loader import HDLChipLoader
+from tbollmeier.hdl.hdl_chip_factory import HDLChipFactory
 
 
 class HDLParserTest(unittest.TestCase):
 
     def setUp(self):
 
-        self._loader = HDLChipLoader()
+        self._factory = HDLChipFactory()
 
     def test_load(self):
 
-        builder = self._loader.get_chip_builder("Or")
+        chip_name = "Or"
+
+        builder = self._factory.get_chip_builder(chip_name)
 
         self.assertIsNotNone(builder)
 
         print(builder._connections)
         print(builder._input_bits)
 
-        chip = builder()
+        chip = self._factory.get_chip(chip_name)
 
         self.assertIsNotNone(chip)
 

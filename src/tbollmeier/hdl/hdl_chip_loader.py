@@ -6,26 +6,15 @@ from tbollmeier.hwsim.bit_value import BitValue
 
 class HDLChipLoader(object):
 
-    def __init__(self):
+    def __init__(self, chip_factory):
+        self._chip_factory = chip_factory
         self._parser = HDLParser()
-        self._loaded = {}
         self._builtin = set(["Nand"])
         self._num_parts = 0
         self._connections = []
         self._input_bits = []
 
-    def get_chip(self, name):
-
-        return self._get_chip_builder(name)()
-
-    def get_chip_builder(self, name):
-
-        if name not in self._loaded:
-            self._loaded[name] = self._load_chip_builder(name)
-
-        return self._loaded[name]
-
-    def _load_chip_builder(self, name):
+    def load_chip_builder(self, name):
 
         if name in self._builtin:
             return {
@@ -76,7 +65,7 @@ class HDLChipLoader(object):
 
             for part_ast in parts_ast.get_children():
                 part_name = part_ast.get_attr('chip-name')
-                part_builder = HDLChipLoader().get_chip_builder(part_name)
+                part_builder = self._chip_factory.get_chip_builder(part_name)
                 part_id = "part_{}".format(self._num_parts)
                 self._num_parts += 1
                 builder.add_internal_part(part_id, part_builder)
