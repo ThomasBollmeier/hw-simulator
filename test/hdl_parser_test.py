@@ -16,14 +16,13 @@ class HDLParserTest(unittest.TestCase):
 
         hdl_code = """
 /** My first chip */
- CHIP Not {
+CHIP Or2 {
 
-    IN in;
+    IN in[2];
     OUT out;
 
     PARTS:
-    Nand(a=in, b=true, out=out);
-
+    Or(a=in[0..0], b=in[1..1], out=out);
 }
 """
 

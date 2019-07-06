@@ -14,7 +14,7 @@ class HDLParserTest(unittest.TestCase):
 
     def test_load(self):
 
-        chip_name = "Or"
+        chip_name = "Or2"
 
         builder = self._factory.get_chip_builder(chip_name)
 
@@ -31,9 +31,9 @@ class HDLParserTest(unittest.TestCase):
         print(chip.get_output_names())
 
         for a in [0, 1]:
-            chip.set_input_bit('a', a)
+            chip.set_input_bit('in', a, 0)
             for b in [0, 1]:
-                chip.set_input_bit('b', b)
+                chip.set_input_bit('in', b, 1)
                 print(a, b, chip.get_output('out').get_bits()[0])
 
 

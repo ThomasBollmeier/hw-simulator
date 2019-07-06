@@ -1,0 +1,9 @@
+CHIP Or2 {
+
+    IN in[2];
+    OUT out;
+
+    PARTS:
+    Or(a=in[0..0], b=in[1..1], out=out);
+
+}
