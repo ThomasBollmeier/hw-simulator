@@ -1,3 +1,5 @@
 .idea/
 src/tbollmeier/__pycache__/
 src/tbollmeier/hwsim/__pycache__/
+src/tbollmeier/hdl/__pycache__/hdl_base_parser.cpython-37.pyc src/tbollmeier/hdl/__pycache__/hdl_parser.cpython-37.pyc src/tbollmeier/hdl/__pycache__/__init__.cpython-37.pyc
+src/tbollmeier/hdl/__pycache__
